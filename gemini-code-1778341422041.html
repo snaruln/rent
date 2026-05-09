@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>收租與水電數位小卡</title>
+    <style>
+        /* 基礎設定與字體 */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, 'Microsoft JhengHei', sans-serif;
+            /* 簡約風格背景：粉紅、鵝黃、粉藍漸層 */
+            background: linear-gradient(135deg, #FFE4E1 0%, #FFFACD 50%, #E0FFFF 100%);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px 15px;
+            /* 增加底部空間，避免內容被螢幕邊緣阻擋 */
+            padding-bottom: 120px; 
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            color: #333333;
+        }
+
+        /* 避免文字不自然斷行 */
+        * {
+            word-break: keep-all;
+        }
+
+        /* 卡片主體設計 */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 450px; /* 適合手機的寬度 */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+        }
+
+        /* 頂部標題 */
+        .header {
+            text-align: center;
+            padding: 24px 20px;
+            background-color: #FFD1DC; /* 粉紅色調 */
+            font-weight: bold;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: #4A4A4A;
+        }
+
+        /* 分頁選單 (Tabs) */
+        .tabs {
+            display: flex;
+            overflow-x: auto; /* 允許橫向滑動 */
+            background-color: #FFFACD; /* 鵝黃色調 */
+            -webkit-overflow-scrolling: touch;
+            border-bottom: 2px solid #EAEAEA;
+        }
+        
+        /* 隱藏捲軸讓畫面更簡約 */
+        .tabs::-webkit-scrollbar {
+            display: none; 
+        }
+
+        /* 分頁按鈕設計 */
+        .tab-link {
+            flex: 0 0 auto;
+            background: none;
+            border: none;
+            outline: none;
+            padding: 16px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #777;
+            transition: all 0.3s ease;
+            white-space: nowrap; /* 確保標題不斷行 */
+            font-weight: 500;
+        }
+
+        .tab-link:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .tab-link.active {
+            background-color: #AEC6CF; /* 粉藍色調 */
+            color: #1C1C1C;
+            font-weight: bold;
+            border-bottom: 3px solid #7BA6B6;
+        }
+
+        /* 分頁內容區域 */
+        .tab-content {
+            display: none;
+            padding: 30px 24px;
+            min-height: 250px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 內容項目樣式 */
+        .info-item {
+            padding: 15px 18px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            background-color: #FAFAFA;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            border-left: 6px solid #FFD1DC; /* 預設側邊條顏色 */
+        }
+
+        /* 各別分頁的內容側邊條顏色搭配 */
+        #rent .info-item { border-left-color: #FFD1DC; }     /* 粉紅 */
+        #water .info-item { border-left-color: #AEC6CF; }    /* 粉藍 */
+        #gas .info-item { border-left-color: #FFFACD; }      /* 鵝黃 */
+        #internet .info-item { border-left-color: #FFD1DC; } /* 粉紅 */
+        #others .info-item { border-left-color: #AEC6CF; }   /* 粉藍 */
+
+        /* 淡入動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="header">
+            收租與水電明細
+        </div>
+
+        <div class="tabs">
+            <button class="tab-link active" onclick="openTab(event, 'rent')">每週房租</button>
+            <button class="tab-link" onclick="openTab(event, 'water')">水費</button>
+            <button class="tab-link" onclick="openTab(event, 'gas')">電費煤氣</button>
+            <button class="tab-link" onclick="openTab(event, 'internet')">網路</button>
+            <button class="tab-link" onclick="openTab(event, 'others')">其他</button>
+        </div>
+
+        <div id="rent" class="tab-content active">
+            <div class="info-item">○○</div>
+            <div class="info-item">○○</div>
+        </div>
+
+        <div id="water" class="tab-content">
+            <div class="info-item">○○</div>
+            <div class="info-item">○○</div>
+        </div>
+
+        <div id="gas" class="tab-content">
+            <div class="info-item">○○</div>
+            <div class="info-item">○○</div>
+        </div>
+
+        <div id="internet" class="tab-content">
+            <div class="info-item">○○</div>
+        </div>
+
+        <div id="others" class="tab-content">
+            <div class="info-item">○○</div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            // 取得所有元素並隱藏/移除 Active 狀態
+            var i, tabcontent, tablinks;
+            
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            // 顯示當前點擊的分頁，並加上 Active 狀態
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
